@@ -3,11 +3,11 @@ package com.tony.builder.guessnumber.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -69,6 +70,16 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 viewModel.onGuessNumber();
+                for (int i = 0; i < 4; i++) {
+                    editTexts[i].setText("");
+                }
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                try {
+                    imm.hideSoftInputFromWindow(editTexts[3].getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
