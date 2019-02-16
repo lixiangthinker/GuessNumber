@@ -4,10 +4,6 @@ import android.util.Log;
 
 import com.tony.builder.guessnumber.model.GuessNumber;
 
-import java.util.Arrays;
-import java.util.List;
-
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/main_background"
     android:orientation="vertical"
     tools:context=".view.GameActivity">
 
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@android:color/white"
+        android:background="@drawable/card_background"
         android:ems="1"
         android:gravity="center_horizontal"
         android:inputType="number"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@android:color/white"
+        android:background="@drawable/card_background"
         android:ems="1"
         android:gravity="center_horizontal"
         android:inputType="number"
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@android:color/white"
+        android:background="@drawable/card_background"
         android:ems="1"
         android:gravity="center_horizontal"
         android:inputType="number"
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@android:color/white"
+        android:background="@drawable/card_background"
         android:ems="1"
         android:gravity="center_horizontal"
         android:inputType="number"
@@ -95,8 +95,9 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:text="Guess Number"
-        android:textColor="@android:color/white"
+        android:textColor="@color/font_color_main"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -107,7 +108,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="A: both number and its position are correct"
-        android:textColor="@android:color/white"
+        android:textColor="@color/font_color_main"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
@@ -118,7 +119,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="B: Only number is correct"
-        android:textColor="@android:color/white"
+        android:textColor="@color/font_color_main"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvHelperA" />
 
@@ -132,8 +133,10 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnGuess"
+        app:layout_constraintVertical_bias="1.0"
         tools:listitem="@layout/item_result" />
 
     <Button
@@ -142,6 +145,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_marginStart="8dp"
+        android:background="@drawable/card_background"
         android:text="Guess"
         app:layout_constraintEnd_toStartOf="@+id/btnClear"
         app:layout_constraintHorizontal_bias="0.5"
@@ -156,6 +160,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:background="@drawable/card_background"
         android:text="Clear"
         app:layout_constraintEnd_toEndOf="@+id/editText0"
         app:layout_constraintHorizontal_bias="0.5"

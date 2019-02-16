@@ -11,8 +11,9 @@
         android:layout_weight="1"
         android:gravity="center_horizontal"
         android:text="item"
-        android:textColor="@android:color/white"
-        android:textSize="24sp" />
+        android:textColor="@color/font_color_main"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvGuessNumber"
@@ -21,8 +22,9 @@
         android:layout_weight="2"
         android:gravity="center_horizontal"
         android:text="TextView"
-        android:textColor="@android:color/white"
-        android:textSize="24sp" />
+        android:textColor="@color/font_color_main"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvResult"
@@ -31,6 +33,7 @@
         android:layout_weight="2"
         android:gravity="center_horizontal"
         android:text="result"
-        android:textColor="@android:color/white"
-        android:textSize="24sp" />
+        android:textColor="@color/font_color_main"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 </LinearLayout>
