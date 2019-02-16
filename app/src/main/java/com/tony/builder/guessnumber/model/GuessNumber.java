@@ -31,6 +31,13 @@ public class GuessNumber {
     }
 
     public void guessNumbers(int[] numbers) {
+        if (isDuplicatedNumbers(numbers)) {
+            if (listener != null) {
+                listener.onInvalidInput(ErrorInput.DUPLICATED_INPUT);
+            }
+            return;
+        }
+
         GuessNumberResult result = getResult(numbers);
         if (result != null && listener != null) {
             listener.onResult(result);
@@ -42,6 +49,17 @@ public class GuessNumber {
                 listener.onGameFinished(false);
             }
         }
+    }
+
+    private boolean isDuplicatedNumbers(@NonNull int[] number) {
+        for (int i = 0; i < number.length; i++) {
+            for (int j = i+1; j < number.length; j++) {
+                if (number[i] == number[j]) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private GuessNumberResult getResult(final int[] numbers) {
@@ -65,7 +83,7 @@ public class GuessNumber {
                 }
             }
         }
-        return new GuessNumberResult(a, b);
+        return new GuessNumberResult(a, b, numbers);
     }
 
 
@@ -79,19 +97,34 @@ public class GuessNumber {
             realNumbers[i] = 0;
         }
         generateRealNumber();
+        if (listener != null) {
+            listener.onNewGame();
+        }
     }
 
     public interface OnResultListener {
         void onResult(GuessNumberResult result);
         void onGameFinished(boolean isWining);
+        void onInvalidInput(ErrorInput error);
+        void onNewGame();
+    }
+
+    public enum ErrorInput {
+        DUPLICATED_INPUT,
+        INVALID_NUMBER
     }
 
     public class GuessNumberResult {
         public int a;
         public int b;
-        GuessNumberResult(int a, int b){
+        public int[] guessNumber;
+        GuessNumberResult(int a, int b, int[] guessNumber){
             this.a = a;
             this.b = b;
+            if(guessNumber != null) {
+                this.guessNumber = new int[guessNumber.length];
+                System.arraycopy(guessNumber, 0, this.guessNumber, 0, this.guessNumber.length);
+            }
         }
 
         @NonNull
@@ -102,6 +135,14 @@ public class GuessNumber {
 
         public String toTextValue() {
             return a+"A"+b+"B";
+        }
+
+        public String getGuessNumberString() {
+            StringBuilder sb = new StringBuilder();
+            for (int i=guessNumber.length-1; i>=0; i--) {
+                sb.append(String.valueOf(guessNumber[i]));
+            }
+            return sb.toString();
         }
     }
 }

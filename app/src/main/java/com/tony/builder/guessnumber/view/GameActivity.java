@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tony.builder.guessnumber.R;
 import com.tony.builder.guessnumber.model.GuessNumber;
@@ -30,7 +31,6 @@ public class GameActivity extends AppCompatActivity {
     private static final String TAG = "GameActivity";
     private GameViewModel viewModel;
     private EditText[] editTexts;
-    private Button btnGuess;
 
     private RecyclerView rvResultContainer;
     private List<GuessNumber.GuessNumberResult> mResult;
@@ -50,6 +50,7 @@ public class GameActivity extends AppCompatActivity {
 
         initEditTexts(viewModel);
         initButtonGuess();
+        initButtonClear();
         initResultView();
         viewModel.onNewGame();
     }
@@ -57,17 +58,29 @@ public class GameActivity extends AppCompatActivity {
     private void initResultView() {
         mResult = new ArrayList<>();
         rvResultContainer = findViewById(R.id.rvResultContainer);
-        rvResultContainer.setLayoutManager(new LinearLayoutManager(this));
+        rvResultContainer.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         mAdapter = new GameResultsAdapter();
         rvResultContainer.setAdapter(mAdapter);
     }
 
     private void initButtonGuess() {
-        btnGuess = findViewById(R.id.btnGuess);
+        Button btnGuess = findViewById(R.id.btnGuess);
         btnGuess.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewModel.onGuessNumber();
+            }
+        });
+    }
+
+    private void initButtonClear() {
+        Button btnClear = findViewById(R.id.btnClear);
+        btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < 4; i++) {
+                    editTexts[i].setText("");
+                }
             }
         });
     }
@@ -112,15 +125,64 @@ public class GameActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
+            if(s.toString().length() == 1) {
+                transferFocus(editTexts);
+            } else if(s.toString().length() == 0){
+                reverseTransFocus(editTexts);
+            }
+        }
 
+        private void reverseTransFocus(EditText[] editTexts) {
+            for (int i = 0; i < editTexts.length - 1 ; i++) {
+                if (editTexts[i].isFocused()) {
+                    editTexts[i].clearFocus();
+                    editTexts[i+1].requestFocus();
+                    return;
+                }
+            }
+        }
+
+        private void transferFocus(@NonNull EditText[] editTexts) {
+            for (int i = editTexts.length - 1; i > 0 ; i--) {
+                if (editTexts[i].isFocused()) {
+                    editTexts[i].clearFocus();
+                    editTexts[i-1].requestFocus();
+                    return;
+                }
+            }
         }
     }
 
-    private void subscribe(GameViewModel viewModel) {
+    private void subscribe(final GameViewModel viewModel) {
+        viewModel.getNewGameFlag().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (editTexts != null) {
+                    for (int i = 0; i<editTexts.length; i++) {
+                        editTexts[i].setText("");
+                    }
+                }
+                mResult = new ArrayList<>();
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+
         viewModel.getIsGameFinished().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isWining) {
                 Log.d(TAG, "game finished, isWining = " + isWining);
+                if (isWining) {
+                    Toast.makeText(GameActivity.this, "Congratulations!", Toast.LENGTH_LONG).show();
+                } else {
+                    int[] realNumber = viewModel.getRealNumber();
+                    StringBuilder sb = new StringBuilder();
+                    for (int i=realNumber.length-1; i>=0; i--) {
+                        sb.append(String.valueOf(realNumber[i]));
+                    }
+                    Toast.makeText(GameActivity.this, "Sorry, the answer is " + sb.toString(), Toast.LENGTH_LONG).show();
+                }
+
+                viewModel.onNewGame();
             }
         });
 
@@ -133,6 +195,15 @@ public class GameActivity extends AppCompatActivity {
                 }
                 mResult.add(guessNumberResult);
                 mAdapter.notifyDataSetChanged();
+            }
+        });
+
+        viewModel.getError().observe(this, new Observer<GuessNumber.ErrorInput>() {
+            @Override
+            public void onChanged(GuessNumber.ErrorInput errorInput) {
+                if (errorInput == GuessNumber.ErrorInput.DUPLICATED_INPUT) {
+                    Toast.makeText(GameActivity.this, "duplicated numbers", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -148,7 +219,8 @@ public class GameActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull GameResultsAdapter.ResultViewHolder holder, int position) {
             holder.tvResult.setText(mResult.get(position).toTextValue());
-            holder.tvItem.setText(""+position);
+            holder.tvItem.setText(String.valueOf(position+1));
+            holder.tvGuessNumber.setText(mResult.get(position).getGuessNumberString());
         }
 
         @Override
@@ -159,12 +231,14 @@ public class GameActivity extends AppCompatActivity {
         class ResultViewHolder extends RecyclerView.ViewHolder
         {
             TextView tvItem;
+            TextView tvGuessNumber;
             TextView tvResult;
             ResultViewHolder(View view)
             {
                 super(view);
                 tvItem = view.findViewById(R.id.tvItemId);
                 tvResult = view.findViewById(R.id.tvResult);
+                tvGuessNumber = view.findViewById(R.id.tvGuessNumber);
             }
         }
     }

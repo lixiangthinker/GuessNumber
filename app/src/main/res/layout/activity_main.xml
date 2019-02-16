@@ -18,6 +18,7 @@
         android:ems="1"
         android:gravity="center_horizontal"
         android:inputType="number"
+        android:maxLength="1"
         android:text="0"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -37,6 +38,7 @@
         android:ems="1"
         android:gravity="center_horizontal"
         android:inputType="number"
+        android:maxLength="1"
         android:text="0"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -56,6 +58,7 @@
         android:ems="1"
         android:gravity="center_horizontal"
         android:inputType="number"
+        android:maxLength="1"
         android:text="0"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -75,6 +78,7 @@
         android:ems="1"
         android:gravity="center_horizontal"
         android:inputType="number"
+        android:maxLength="1"
         android:text="0"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -88,8 +92,8 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
         android:text="Guess Number"
         android:textColor="@android:color/white"
         android:textSize="24sp"
@@ -129,17 +133,32 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnGuess" />
+        app:layout_constraintTop_toBottomOf="@+id/btnGuess"
+        tools:listitem="@layout/item_result" />
 
     <Button
         android:id="@+id/btnGuess"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Guess"
+        app:layout_constraintEnd_toStartOf="@+id/btnClear"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/editText3"
+        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+
+    <Button
+        android:id="@+id/btnClear"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Guess"
+        android:text="Clear"
         app:layout_constraintEnd_toEndOf="@+id/editText0"
-        app:layout_constraintStart_toStartOf="@+id/editText3"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnGuess"
+        app:layout_constraintTop_toBottomOf="@+id/editText3" />
 </androidx.constraintlayout.widget.ConstraintLayout>
